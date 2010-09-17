@@ -1,4 +1,19 @@
--- Simple Server Status --
+== Simple Server Status ==
 
-By joet3ch [ joe@t3ch.com ]
+== joet3ch [joe@t3ch.com] ==
 
+=Description=
+Monitor the connectivity to various services and display results in web ui
+
+=Requirements=
+web.py [ http://webpy.org/ ] (test with v0.34)
+
+=Setup=
+- Create database 'sss' using the 'schema.sql' file
+- Add database details to 'config.py'
+- Add cron job for 'launch.py'
+- Run app 'python sss.py' (add to your system's startup)
+
+=Usage=
+- add/modify services in the database table 'sss.services'
+- navigate to http://<your_ip>:8080/ 
