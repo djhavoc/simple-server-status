@@ -1,6 +1,6 @@
 class Checks:
     
-    def databaseMysql(self, host, name, user, passwd):
+    def mysql(self, host, name, user, passwd):
     	try:
     		dbConn = MySQLdb.connect (host = host,
     								user = user,
@@ -9,15 +9,13 @@ class Checks:
     		return True
     	except MySQLdb.Error, e:
             return False
-            
-    def mysql(self, dbHost, dbName, dbUser, dbPass):    
-        
+                    
     def http(self, url):
 
         result = ''
-        return result
+        return True
         
-    def tcpPort(self, port):
+    def tcp(self, port):
 
         result = ''
-        return result
+        return True

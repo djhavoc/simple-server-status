@@ -5,14 +5,22 @@
 #### joet3ch (joe@t3ch.com)
 ####
 
+## launch web app
+
 import sys
 sys.path.append('webpy/')
+sys.path.append('Classes/')
 import web
 from WebView import *
 
 ## define views
 urls = ( 
-    '/(.*)', 'Status' )
+    '/', 'Status',
+    '/status', 'Status',
+    '/status/', 'Status',
+    '/new', 'AddCheck',
+    '/new/', 'AddCheck'
+    )
 
 app = web.application(urls, globals())
         
