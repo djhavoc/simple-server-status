@@ -1,7 +1,5 @@
 import Service
 
-#from Check import *
-
 class Status:
 
     ## fetch all checks data and display
@@ -32,7 +30,6 @@ class Status:
                 content += '<td>' + str(item['when']) + '</td>'
                 content += '<td>' + item['db_name'] + '</td>'
                 content += '<td>' + item['db_host'] + '</td>'
-                content += '<td>' + str(item['db_port']) + '</td>'
                 content += '<td>' + item['db_user'] + '</td>'
                 content += '<tr>'        
             content += "</table>"
@@ -57,12 +54,13 @@ class Status:
         if (listOfChecks.rowcount > 0):
             content += "<h2>TCP Port</h2>"
             content += "<table>"
-            content += "<tr><td>title</td><td>status</td><td>when</td><td>port</td></tr>"
+            content += "<tr><td>title</td><td>status</td><td>when</td><td>ip</td><td>port</td></tr>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + item['status'] + '</td>'
                 content += '<td>' + str(item['when']) + '</td>'
+                content += '<td>' + str(item['tcp_ip']) + '</td>'
                 content += '<td>' + str(item['tcp_port']) + '</td>'
                 content += '<tr>'        
             content += "</table>"

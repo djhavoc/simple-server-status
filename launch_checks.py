@@ -9,4 +9,8 @@
 
 import sys
 sys.path.append('Classes/')
+import Check
 
+if __name__ == "__main__":
+    launcher = Check.Checks()
+    launcher.servicesToInspect()
