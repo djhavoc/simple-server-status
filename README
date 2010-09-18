@@ -3,7 +3,7 @@
 == joet3ch [joe@t3ch.com] ==
 
 =Description=
-Monitor the connectivity to various services and display results in web ui
+A super lightweight service monitor.  Checks the connectivity to various services and displays results in web ui.
 
 =Requirements=
 web.py [ http://webpy.org/ ] (test with v0.34)
