@@ -1,6 +1,7 @@
 import copy
 import MySQLdb
 import urllib
+import socket
 import TimeoutSocket
 import Database
 import config
@@ -13,7 +14,6 @@ class Checks:
     ## build list of services for an inspection
     def servicesToInspect(self, kind):
         if (kind == 'mysql'):
-            print config.DB_CRYPTOKEY
             self.db.cursor.execute("""SELECT id, 
                                                 title, 
                                                 db_name, 
@@ -50,7 +50,7 @@ class Checks:
         elif (kind == 'tcp'):
             if (self.db.cursor.rowcount > 0):
                 for item in self.db.cursor.fetchall():
-                    self.tcp(item['id'], item['ip'], item['tcp_port'])        
+                    self.tcp(item['id'], item['tcp_ip'], item['tcp_port'])        
 
         return True
         
@@ -60,11 +60,6 @@ class Checks:
     
     ## check a mysql connection
     def mysql(self, serviceID, host, name, user, passwd):
-        print serviceID
-        print host
-        print name
-        print user
-        print passwd
         try:
             dbConn = MySQLdb.connect (host = host,
                                     user = user,
@@ -73,14 +68,12 @@ class Checks:
             status = 'good'
         except MySQLdb.Error, e:
             status = 'bad'
-        print status
         self.recordResult(status, serviceID)
                     
     ## check a web service
     def http(self, serviceID, url):
-        urllib.cleanup()
         try:
-            urllib.URLopener(url)
+            urllib.urlopen(url)
             status = 'good'
         except IOError, e:
             status = 'bad'
@@ -90,7 +83,7 @@ class Checks:
     def tcp(self, serviceID, ip, port):
         TimeoutSocket.setDefaultSocketTimeout(20)
         s = None
-        for res in socket.getaddrinfo(ip, port, socket.AF_UNSPEC, socket.SOCK_STREAM):
+        for res in socket.getaddrinfo(ip, int(port), socket.AF_UNSPEC, socket.SOCK_STREAM):
             af, socktype, proto, canonname, sa = res
             try:
                 s = socket.socket(af, socktype, proto)
@@ -108,5 +101,5 @@ class Checks:
                 s = None
                 continue
             break
-        s.close()
+        #s.close()
         self.recordResult(status, serviceID)
