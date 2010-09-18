@@ -4,7 +4,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.0.77)
 # Database: sss
-# Generation Time: 2010-09-17 11:50:17 -0400
+# Generation Time: 2010-09-18 00:09:45 -0400
 # ************************************************************
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -25,10 +25,10 @@ DROP TABLE IF EXISTS `results`;
 CREATE TABLE `results` (
   `id` int(11) NOT NULL auto_increment,
   `services_id` int(11) default NULL,
-  `when` datetime default NULL,
-  `description` varchar(255) default NULL,
+  `last_check` datetime default NULL,
+  `status` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 
 
@@ -39,17 +39,18 @@ DROP TABLE IF EXISTS `services`;
 
 CREATE TABLE `services` (
   `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
+  `title` varchar(255) default NULL,
   `kind` varchar(255) default NULL,
   `tcp_port` int(8) default NULL,
-  `http_url` blob,
+  `http_url` varchar(1024) default NULL,
   `db_name` varchar(255) default NULL,
   `db_host` varchar(255) default NULL,
   `db_port` int(8) default NULL,
-  `db_user` blob,
+  `db_user` varchar(255) default NULL,
   `db_pass` blob,
+  `tcp_ip` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 
 

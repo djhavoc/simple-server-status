@@ -22,12 +22,12 @@ class Status:
         if (listOfChecks.rowcount > 0):
             content += "<h2>MySQL</h2>"
             content += "<table>"
-            content += "<tr><td>title</td><td>status</td><td>when</td><td>database</td><td>host</td><td>port</td><td>user</td></tr>"
+            content += "<tr><td>title</td><td>status</td><td>when</td><td>database</td><td>host</td><td>user</td></tr>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + item['status'] + '</td>'
-                content += '<td>' + str(item['when']) + '</td>'
+                content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + item['db_name'] + '</td>'
                 content += '<td>' + item['db_host'] + '</td>'
                 content += '<td>' + item['db_user'] + '</td>'
@@ -44,7 +44,7 @@ class Status:
                 content += '<tr>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + item['status'] + '</td>'
-                content += '<td>' + str(item['when']) + '</td>'
+                content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + str(item['http_url']) + '</td>'
                 content += '<tr>'        
             content += "</table>"
@@ -59,7 +59,7 @@ class Status:
                 content += '<tr>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + item['status'] + '</td>'
-                content += '<td>' + str(item['when']) + '</td>'
+                content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + str(item['tcp_ip']) + '</td>'
                 content += '<td>' + str(item['tcp_port']) + '</td>'
                 content += '<tr>'        

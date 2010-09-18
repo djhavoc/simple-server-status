@@ -11,10 +11,9 @@ class Listing:
                                         services.title,
                                         services.db_name,
                                         services.db_host,
-                                        services.db_port,
                                         services.db_user,
                                         results.services_id,
-                                        results.when,
+                                        results.last_check,
                                         results.status
                                     FROM services, results
                                     WHERE services.id = results.services_id
@@ -28,7 +27,7 @@ class Listing:
                                         services.title,
                                         services.http_url,
                                         results.services_id,
-                                        results.when,
+                                        results.last_check,
                                         results.status
                                     FROM services, results
                                     WHERE services.id = results.services_id
@@ -43,7 +42,7 @@ class Listing:
                                         services.tcp_ip,
                                         services.tcp_port,
                                         results.services_id,
-                                        results.when,
+                                        results.last_check,
                                         results.status
                                     FROM services, results
                                     WHERE services.id = results.services_id

@@ -1,10 +1,9 @@
 == TODO ==
 
-
+- pimp out gui with some eyecandy
 - thread checks
 - ability to add new checks via web ui
 - save historic check results (logging, graphs/stats)
-- pimp out gui with some eyecandy
 - modify scheduling and time intervals via ui's
 - delete checks via web ui
 - modify checks via web ui
