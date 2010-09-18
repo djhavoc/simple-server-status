@@ -11,8 +11,8 @@ web.py [ http://webpy.org/ ] (test with v0.34)
 =Setup=
 - Create database 'sss' using the 'schema.sql' file
 - Add database details to 'config.py'
-- Add cron job for 'launch.py'
-- Run app 'python sss.py' (add to your system's startup)
+- Add cron job for 'launch_checks.py'
+- Run app 'python launch_web.py' (add to your system's startup)
 
 =Usage=
 - add/modify services in the database table 'sss.services'
