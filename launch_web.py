@@ -8,8 +8,8 @@
 ## launch web app
 
 import sys
-sys.path.append('webpy/')
 sys.path.append('Classes/')
+sys.path.append('Classes/webpy/')
 import web
 from WebView import *
 
