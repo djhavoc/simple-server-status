@@ -5,11 +5,66 @@ body
 
 #mainContent
 {
+	margin-top:25px;
+	padding-bottom:25px;
     background:#fff;
-    
+	
+	-moz-box-shadow: 5px 5px 5px #333333, 0px 0px 5px #B3B3B3; /* Firefox */
+	-webkit-box-shadow: 5px 5px 5px #333333, 0px 0px 5px #B3B3B3; /* Safari, Chrome */
+	box-shadow: 5px 5px 5px #333333, 0px 0px 5px #B3B3B3; /* CSS3 */
+	
+    -webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
 }
 
-#header
+#header h1
 {
-    
+	margin-top:5px;
+	font-family: 'Droid Sans';
+	font-size:28px;
+	color:#000;
+	text-shadow: 2px 2px 2px #888;
+}
+
+.checkModule
+{
+	margin:25px 0 0 25px;
+	background:#EEE;
+	
+	-moz-box-shadow: 5px 5px 5px #333333, 0px 0px 5px #B3B3B3; /* Firefox */
+	-webkit-box-shadow: 5px 5px 5px #333333, 0px 0px 5px #B3B3B3; /* Safari, Chrome */
+	box-shadow: 5px 5px 5px #333333, 0px 0px 5px #B3B3B3; /* CSS3 */
+	
+    -webkit-border-top-left-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-bottomright: 10px;
+	border-top-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.checkName
+{
+	margin-top:5px;
+	margin-bottom:5px;
+	font-family: 'Droid Sans';
+	font-size:16px;
+	color:#000;
+	text-shadow: 1px 1px 1px #888;
+	text-align:left;
+}
+
+.checkTable th
+{
+	margin-bottom:5px;
+	font-family: 'Droid Sans';
+	font-size:14px;
+	color:#000;
+	text-shadow: 1px 1px 1px #888;
+}
+
+.checkTable td
+{
+	text-align:center;
 }
