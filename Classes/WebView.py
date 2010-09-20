@@ -22,7 +22,7 @@ class Status:
         <div id="header" class="grid_8">
         <h1>Simple Server Status</h1>
         </div>
-        <br /><br />
+        <br /><br /><br />
         """
 
         ## mysql
