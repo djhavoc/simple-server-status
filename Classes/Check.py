@@ -1,8 +1,8 @@
 import copy
 import MySQLdb
-import urllib
 import socket
-import TimeoutSocket
+#import TimeoutSocket
+import urllib2
 import Database
 import config
 
@@ -73,7 +73,8 @@ class Checks:
     ## check a web service
     def http(self, serviceID, url):
         try:
-            urllib.urlopen(url)
+            result = urllib2.urlopen(url)
+            #print result.read(100)
             status = 'good'
         except IOError, e:
             status = 'bad'
@@ -81,7 +82,7 @@ class Checks:
         
     ## check a tcp port
     def tcp(self, serviceID, ip, port):
-        TimeoutSocket.setDefaultSocketTimeout(20)
+        #TimeoutSocket.setDefaultSocketTimeout(20)
         s = None
         for res in socket.getaddrinfo(ip, int(port), socket.AF_UNSPEC, socket.SOCK_STREAM):
             af, socktype, proto, canonname, sa = res

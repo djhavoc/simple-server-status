@@ -7,6 +7,9 @@ A super lightweight service monitor.  Checks the connectivity to various service
 
 =Requirements=
 web.py [ http://webpy.org/ ] (test with v0.34)
+MySQLdb
+pyOpenSSL
+urllib2
 
 =Setup=
 - Move 'webpy/' to './Classes/'
