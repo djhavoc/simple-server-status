@@ -6,9 +6,9 @@
 A super lightweight service monitor.  Checks the connectivity to various services and displays results in web ui.
 
 =Requirements=
+tested with python 2.6
 web.py [ http://webpy.org/ ] (test with v0.34)
 MySQLdb
-pyOpenSSL
 urllib2
 
 =Setup=
