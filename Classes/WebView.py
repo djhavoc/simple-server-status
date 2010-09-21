@@ -30,7 +30,7 @@ class Status:
         if (listOfChecks.rowcount > 0):
             content += "<div class='checkModule grid_15'>"
             content += "<div class='checkName grid_6'><h2>MySQL</h2></div>"
-            content += "<div class='grid_15'"
+            content += "<div class='grid_15'>"
             content += "<table class='checkTable' width='100%'>"
             content += "<thead><tr><th><b>status</b></th><th><b>title</b></th><th><b>when</b></th><th><b>database</b></th><th><b>host</b></th><th><b>user</b></th></tr></thead>"
             content += "<tbody>"
@@ -51,7 +51,7 @@ class Status:
         if (listOfChecks.rowcount > 0):
             content += "<div class='checkModule grid_16'>"
             content += "<div class='checkName grid_6'><h2>HTTP</h2></div>"
-            content += "<div class='grid_15'"
+            content += "<div class='grid_15'>"
             content += "<table class='checkTable' width='100%'>"
             content += "<thead><tr><th><b>title</b></th><th><b>status</b></th><th><b>when</b></th><th><b>url</b></th></tr></thead>"
             content += "<tbody>"
@@ -70,7 +70,7 @@ class Status:
         if (listOfChecks.rowcount > 0):
             content += "<div class='checkModule grid_16'>"
             content += "<div class='checkName grid_6'><h2>TCP Port</h2></div>"
-            content += "<div class='grid_15'"
+            content += "<div class='grid_15'>"
             content += "<table class='checkTable' width='100%'>"
             content += "<thead><tr><th><b>title</b></th><th><b>status</b></th><th><b>when</b></th><th><b>ip</b></th><th><b>port</b></th></tr></thead>"
             content += "<tbody>"
