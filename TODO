@@ -10,12 +10,6 @@
 - external notifications (ie. snmp, email)
 
 
-SAAC
-LENS
-
-Right now it is a non-official system that can be an extra tool when troubleshooting issues with various systems.
-
-
 Capabilities today:
 - mysql
 	- database existance

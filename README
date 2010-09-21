@@ -1,6 +1,5 @@
-== Simple Server Status ==
-
-joet3ch [joe@t3ch.com]
+## Simple Server Status
+## http://github.com/joet3ch/simple-server-status
 
 =Description=
 A super lightweight service monitor.  Checks the connectivity to various services and displays results in web ui.

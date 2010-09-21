@@ -1,5 +1,3 @@
-## Config for Simple Server Status ##
-
 DB_HOST = "127.0.0.1"
 DB_NAME = "sss"
 DB_USER = "sss"
