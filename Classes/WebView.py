@@ -49,7 +49,7 @@ class Status:
         ## http
         listOfChecks = self.serviceList.http()
         if (listOfChecks.rowcount > 0):
-            content += "<div class='checkModule grid_16'>"
+            content += "<div class='checkModule grid_15'>"
             content += "<div class='checkName grid_6'><h2>HTTP</h2></div>"
             content += "<div class='grid_15'>"
             content += "<table class='checkTable' width='100%'>"
@@ -68,7 +68,7 @@ class Status:
         ## tcp
         listOfChecks = self.serviceList.tcp()
         if (listOfChecks.rowcount > 0):
-            content += "<div class='checkModule grid_16'>"
+            content += "<div class='checkModule grid_15'>"
             content += "<div class='checkName grid_6'><h2>TCP Port</h2></div>"
             content += "<div class='grid_15'>"
             content += "<table class='checkTable' width='100%'>"
