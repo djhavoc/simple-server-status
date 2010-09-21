@@ -13,6 +13,7 @@ class Status:
         <title>Simple Server Status</title>
         <link rel="stylesheet" href="static/styles/reset.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="static/styles/960.css" type="text/css" media="screen" />
+        <link href='http://fonts.googleapis.com/css?family=Droid+Sans:bold' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="static/styles/norm.css" type="text/css" media="screen" />
         </head>
         <body>
@@ -21,16 +22,18 @@ class Status:
         <div id="header" class="grid_8">
         <h1>Simple Server Status</h1>
         </div>
-        <br /><br />
+        <br /><br /><br />
         """
 
         ## mysql
         listOfChecks = self.serviceList.mysql()
         if (listOfChecks.rowcount > 0):
-            content += "<div class='checkModule grid_16'>"
+            content += "<div class='checkModule grid_15'>"
             content += "<div class='checkName grid_6'><h2>MySQL</h2></div>"
-            content += "<table class='checkTable grid_16'>"
-            content += "<tr><td><b>status</b></td><td><b>title</b></td><td><b>when</b></td><td><b>database</b></td><td><b>host</b></td><td><b>user</b></td></tr>"
+            content += "<div class='grid_15'"
+            content += "<table class='checkTable' width='100%'>"
+            content += "<thead><tr><th><b>status</b></th><th><b>title</b></th><th><b>when</b></th><th><b>database</b></th><th><b>host</b></th><th><b>user</b></th></tr></thead>"
+            content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
                 content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
@@ -39,32 +42,38 @@ class Status:
                 content += '<td>' + item['db_name'] + '</td>'
                 content += '<td>' + item['db_host'] + '</td>'
                 content += '<td>' + item['db_user'] + '</td>'
-                content += '<tr>'        
-            content += "</table></div>"
+                content += '</tr>'        
+            content += "</tbody>"
+            content += "</table></div></div>"
 
         ## http
         listOfChecks = self.serviceList.http()
         if (listOfChecks.rowcount > 0):
             content += "<div class='checkModule grid_16'>"
             content += "<div class='checkName grid_6'><h2>HTTP</h2></div>"
-            content += "<table class='checkTable grid_16'>"
-            content += "<tr><td><b>title</b></td><td><b>status</b></td><td><b>when</b></td><td><b>url</b></td></tr>"
+            content += "<div class='grid_15'"
+            content += "<table class='checkTable' width='100%'>"
+            content += "<thead><tr><th><b>title</b></th><th><b>status</b></th><th><b>when</b></th><th><b>url</b></th></tr></thead>"
+            content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
                 content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + str(item['http_url']) + '</td>'
-                content += '<tr>'        
-            content += "</table></div>"
+                content += '</tr>'
+            content += "</tbody>"
+            content += "</table></div></div>"
 
         ## tcp
         listOfChecks = self.serviceList.tcp()
         if (listOfChecks.rowcount > 0):
             content += "<div class='checkModule grid_16'>"
             content += "<div class='checkName grid_6'><h2>TCP Port</h2></div>"
-            content += "<table class='checkTable grid_16'>"
-            content += "<tr><td><b>title</b></td><td><b>status</b></td><td><b>when</b></td><td><b>ip</b></td><td><b>port</b></td></tr>"
+            content += "<div class='grid_15'"
+            content += "<table class='checkTable' width='100%'>"
+            content += "<thead><tr><th><b>title</b></th><th><b>status</b></th><th><b>when</b></th><th><b>ip</b></th><th><b>port</b></th></tr></thead>"
+            content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
                 content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
@@ -72,10 +81,11 @@ class Status:
                 content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + str(item['tcp_ip']) + '</td>'
                 content += '<td>' + str(item['tcp_port']) + '</td>'
-                content += '<tr>'        
-            content += "</table></div>"
+                content += '</tr>'
+            content += "</tbody>"
+            content += "</table></div></div>"
 
-            content += """</div></body></html>"""        
+            content += """</div></div></body></html>"""        
         return content
 
 class AddCheck:
