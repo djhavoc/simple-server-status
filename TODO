@@ -1,6 +1,6 @@
 == TODO ==
 
-- pimp out gui with some eyecandy
+- add check for http auth
 - thread checks
 - ability to add new checks via web ui
 - save historic check results (logging, graphs/stats)
@@ -8,3 +8,27 @@
 - delete checks via web ui
 - modify checks via web ui
 - external notifications (ie. snmp, email)
+
+
+SAAC
+LENS
+
+Right now it is a non-official system that can be an extra tool when troubleshooting issues with various systems.
+
+
+Capabilities today:
+- mysql
+	- database existance
+	- user credentials
+
+- tcp
+	- ip up
+	- port listening
+	- name resolution
+
+- http
+	- 
+	
+	
+	
+	

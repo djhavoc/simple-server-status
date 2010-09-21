@@ -31,6 +31,8 @@ body
 {
 	margin:25px 0 0 25px;
 	background:#EEEEEE;
+	min-width:900px;
+	max-width:900px;
 	
 	-moz-box-shadow: 5px 5px 5px #333333, 0px 0px 5px #B3B3B3; /* Firefox */
 	-webkit-box-shadow: 5px 5px 5px #333333, 0px 0px 5px #B3B3B3; /* Safari, Chrome */
@@ -67,4 +69,5 @@ body
 .checkTable td
 {
 	text-align:center;
+	font-size:14px;
 }
