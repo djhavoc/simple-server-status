@@ -53,7 +53,7 @@ class Status:
             content += "<div class='checkName grid_6'><h2>HTTP</h2></div>"
             content += "<div class='grid_15'>"
             content += "<table class='checkTable' width='100%'>"
-            content += "<thead><tr><th><b>title</b></th><th><b>status</b></th><th><b>when</b></th><th><b>url</b></th></tr></thead>"
+            content += "<thead><tr><th><b>status</b><th><b>title</b></th></th><th><b>when</b></th><th><b>url</b></th></tr></thead>"
             content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
@@ -72,7 +72,7 @@ class Status:
             content += "<div class='checkName grid_6'><h2>TCP Port</h2></div>"
             content += "<div class='grid_15'>"
             content += "<table class='checkTable' width='100%'>"
-            content += "<thead><tr><th><b>title</b></th><th><b>status</b></th><th><b>when</b></th><th><b>ip</b></th><th><b>port</b></th></tr></thead>"
+            content += "<thead><tr><th><b>status</b><th><b>title</b></th></th><th><b>when</b></th><th><b>ip</b></th><th><b>port</b></th></tr></thead>"
             content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
