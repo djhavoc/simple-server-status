@@ -20,3 +20,16 @@ urllib2
 =Usage=
 - Add/modify services in the database table 'sss.services'
 - Navigate to http://<your_ip>:8080/ 
+
+== Capabilities ==
+- mysql
+	- database existance
+	- user credentials
+
+- tcp
+	- ip up
+	- port listening
+	- name resolution
+
+- http
+	- 
