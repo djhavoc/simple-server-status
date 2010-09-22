@@ -1,3 +1,4 @@
 webpy/
 .DS_Store
 *.pyc
+doc/wiki/
