@@ -64,9 +64,10 @@ body
 	text-shadow: 1px 1px 1px #888;
 }
 
-.checkTable tr
+.checkTable
 {
 	margin-bottom:10px;
+	margin-right:10px;
 }
 
 .checkTable td
