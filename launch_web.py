@@ -1,6 +1,7 @@
 ## launch web app
 
 import sys
+sys.stderr = None
 sys.path.append('Classes/')
 sys.path.append('Classes/webpy/')
 import web
