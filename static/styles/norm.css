@@ -64,6 +64,11 @@ body
 	text-shadow: 1px 1px 1px #888;
 }
 
+.checkTable tr
+{
+	margin-bottom:10px;
+}
+
 .checkTable td
 {
 	text-align:center;
