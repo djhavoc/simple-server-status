@@ -15,3 +15,5 @@ if __name__ == "__main__":
 
     launcher.servicesToInspect('tcp')
     launcher.run('tcp')
+
+    launcher.closeDatabase()

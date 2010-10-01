@@ -10,6 +10,11 @@ class Checks:
     
     def __init__(self):
         self.db = Database.Connection()
+        
+    def closeDatabase(self):
+        self.db.cursor.close()
+        self.db.connection.commit()
+        self.db.connection.close()
     
     ## build list of services for an inspection
     def servicesToInspect(self, kind):
@@ -66,6 +71,7 @@ class Checks:
                                     passwd = passwd,
                                     db = name)
             status = 'good'
+            dbConn.close()
         except MySQLdb.Error, e:
             status = 'bad'
         self.recordResult(status, serviceID)
@@ -102,5 +108,5 @@ class Checks:
                 s = None
                 continue
             break
-        #s.close()
+        s.close()
         self.recordResult(status, serviceID)
