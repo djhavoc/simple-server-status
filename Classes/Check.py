@@ -40,6 +40,17 @@ class Checks:
                                                         FROM services 
                                                         WHERE services.kind = 'tcp'""")
 
+        if (kind == 'ipsec'):
+            self.db.cursor.execute("""SELECT id, 
+                                                title, 
+                                                ipsec_gateway, 
+                                                ipsec_group, 
+                                                AES_DECRYPT(ipsec_secret,'%s') as ipsec_secret,
+                                                ipsec_user,
+                                                AES_DECRYPT(ipsec_pass,'%s') as ipsec_pass                                                
+                                        FROM services
+                                        WHERE services.kind = 'ipsec'""" %(config.DB_CRYPTOKEY))
+
     ## perform inspections
     def run(self, kind):
         if (kind == 'mysql'):
