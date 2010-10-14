@@ -15,4 +15,8 @@ class Results:
     def tcp(self):
         results = { }
         return results
+
+    def ipsec(self):
+        results = { }
+        return results
         

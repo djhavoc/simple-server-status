@@ -49,3 +49,19 @@ class Listing:
                                     AND services.kind = 'tcp'
                                 """)
         return self.db.cursor
+
+    def ipsec(self):
+        self.db.cursor.execute("""SELECT 
+                                        services.id,
+                                        services.title,
+                                        services.ipsec_gateway,
+                                        services.ipsec_group,
+                                        services.ipsec_user,
+                                        results.services_id,
+                                        results.last_check,
+                                        results.status
+                                    FROM services, results
+                                    WHERE services.id = results.services_id
+                                    AND services.kind = 'ipsec'
+                                """)
+        return self.db.cursor

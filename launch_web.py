@@ -10,9 +10,7 @@ from WebView import *
 ## define views
 urls = ( 
     '/', 'Status',
-    '/status', 'Status',
     '/status/', 'Status',
-    '/new', 'AddCheck',
     '/new/', 'AddCheck'
     )
 

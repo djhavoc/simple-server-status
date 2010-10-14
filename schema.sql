@@ -49,6 +49,11 @@ CREATE TABLE `services` (
   `db_user` varchar(255) default NULL,
   `db_pass` blob,
   `tcp_ip` varchar(255) default NULL,
+  `ipsec_gateway` varchar(255) default NULL,
+  `ipsec_group` varchar(255) default NULL,
+  `ipsec_secret` blob,
+  `ipsec_user` varchar(255) default NULL,
+  `ipsec_pass` blob,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 

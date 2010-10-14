@@ -85,6 +85,28 @@ class Status:
             content += "</tbody>"
             content += "</table></div></div>"
 
+        ## ipsec
+        listOfChecks = self.serviceList.ipsec()
+        if (listOfChecks.rowcount > 0):
+            content += "<div class='checkModule grid_15'>"
+            content += "<div class='checkName grid_6'><h2>Cisco IPsec</h2></div>"
+            content += "<div class='grid_15'>"
+            content += "<table class='checkTable' width='100%'>"
+            content += "<thead><tr><th><b>status</b><th><b>title</b></th></th><th><b>when</b></th><th><b>gateway</b></th><th><b>group</b></th><th><b>user</b></th></tr></thead>"
+            content += "<tbody>"
+            for item in listOfChecks.fetchall():
+                content += '<tr>'
+                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
+                content += '<td>' + item['title'] + '</td>'
+                content += '<td>' + str(item['last_check']) + '</td>'
+                content += '<td>' + str(item['ipsec_gateway']) + '</td>'
+                content += '<td>' + str(item['ipsec_group']) + '</td>'
+                content += '<td>' + str(item['ipsec_user']) + '</td>'
+                content += '</tr>'
+            content += "</tbody>"
+            content += "</table></div></div>"
+
+
             content += """</div></div></body></html>"""        
         return content
 
