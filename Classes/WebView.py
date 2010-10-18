@@ -1,10 +1,11 @@
 import Service
+import web
 
 class Status:
 
     ## fetch all checks data and display
     def GET(self):
-
+        
         self.serviceList = Service.Listing()
         
         content = """
@@ -24,7 +25,7 @@ class Status:
         </div>
         <br /><br /><br />
         """
-
+        
         ## mysql
         listOfChecks = self.serviceList.mysql()
         if (listOfChecks.rowcount > 0):
