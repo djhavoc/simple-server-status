@@ -11,6 +11,7 @@ from WebView import *
 urls = ( 
     '/', 'Status',
     '/status/', 'Status',
+    '/run/', 'RunChecks',
     '/new/', 'AddCheck'
     )
 

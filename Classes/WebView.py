@@ -1,4 +1,6 @@
+import subprocess
 import Service
+import web
 
 class Status:
 
@@ -22,8 +24,9 @@ class Status:
         <div id="header" class="grid_8">
 		<h1>Simple Server Status</h1>
 		</div>
-		<div id="spacer" class="grid_6">&nbsp;</div>
-		<div id="settings" class="grid_1"><a href="/new"><img src="static/images/preferences_system.png" width="32" height="32"></a></div>
+		<div id="spacer" class="grid_6">&nbsp;</div>		
+		<div id="settings" class="grid_1"><button id='run'>Run Checks Now</button></div>
+		<!-- <div id="settings" class="grid_1"><a href="/new"><img src="static/images/preferences_system.png" width="32" height="32"></a></div> -->
         <br /><br /><br />
         """
 
@@ -87,9 +90,49 @@ class Status:
             content += "</tbody>"
             content += "</table></div></div>"
 
+        ## ipsec
+        listOfChecks = self.serviceList.ipsec()
+        if (listOfChecks.rowcount > 0):
+            content += "<div class='checkModule grid_15'>"
+            content += "<div class='checkName grid_6'><h2>Cisco IPsec</h2></div>"
+            content += "<div class='grid_15'>"
+            content += "<table class='checkTable' width='100%'>"
+            content += "<thead><tr><th><b>status</b><th><b>target</b><th><b>title</b></th></th><th><b>when</b></th><th><b>gateway</b></th><th><b>group</b></th><th><b>user</b></th><th><b>target</b></th></tr></thead>"
+            content += "<tbody>"
+            for item in listOfChecks.fetchall():
+                content += '<tr>'
+                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
+                content += '<td><img src=\"static/images/' + str(item['status_secondary']) + '.png\" /></td>'
+                content += '<td>' + item['title'] + '</td>'
+                content += '<td>' + str(item['last_check']) + '</td>'
+                content += '<td>' + str(item['ipsec_gateway']) + '</td>'
+                content += '<td>' + str(item['ipsec_group']) + '</td>'
+                content += '<td>' + str(item['ipsec_user']) + '</td>'
+                content += '<td>' + str(item['ipsec_target_host_ip']) + '</td>'
+                content += '</tr>'
+            content += "</tbody>"
+            content += "</table></div></div>"
+            content += '''
+                        <script src="static/js/jquery.js" type="text/javascript"></script>
+                		<script type="text/javascript">            		    
+                    		$("#run").click(function()
+                    		{
+                                $.get("/run/", function(data) {
+                                    $('.result').html(data);
+                                    location.reload();
+                                });
+                            });
+                		</script>
+                        '''
             content += """</div></div></body></html>"""        
         return content
 
+class RunChecks:
+    
+    def GET(self):
+        #TODO: this needs to be called securely!
+        subprocess.call('/usr/bin/python launch_checks.py', shell=True)
+        
 class AddCheck:
         
     def GET(self):

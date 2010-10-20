@@ -27,6 +27,7 @@ CREATE TABLE `results` (
   `services_id` int(11) default NULL,
   `last_check` datetime default NULL,
   `status` varchar(255) default NULL,
+  `status_secondary` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
@@ -54,6 +55,7 @@ CREATE TABLE `services` (
   `ipsec_secret` blob,
   `ipsec_user` varchar(255) default NULL,
   `ipsec_pass` blob,
+  `ipsec_target_host_ip` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 

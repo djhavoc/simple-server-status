@@ -3,6 +3,7 @@ import os
 import pexpect
 import copy
 import MySQLdb
+import ping
 import socket
 #import TimeoutSocket
 import urllib2
@@ -51,9 +52,19 @@ class Checks:
                                                 ipsec_group, 
                                                 AES_DECRYPT(ipsec_secret,'%s') as ipsec_secret,
                                                 ipsec_user,
-                                                AES_DECRYPT(ipsec_pass,'%s') as ipsec_pass                                                
+                                                AES_DECRYPT(ipsec_pass,'%s') as ipsec_pass,
+                                                ipsec_target_host_ip                                                
                                         FROM services
                                         WHERE services.kind = 'ipsec'""" %(config.DB_CRYPTOKEY,config.DB_CRYPTOKEY))
+
+    def recordResult(self, status, serviceID):
+        self.db.cursor.execute("""UPDATE results SET last_check = NOW(), status = '%s' WHERE services_id = %s """ % (status, serviceID))
+        return self.db.cursor.lastrowid
+
+    def recordResultSecondary(self, status, serviceID):
+        self.db.cursor.execute("""UPDATE results SET last_check = NOW(), status_secondary = '%s' WHERE services_id = %s """ % (status, serviceID))
+        return self.db.cursor.lastrowid
+
 
     ## perform inspections
     def run(self, kind):
@@ -75,53 +86,49 @@ class Checks:
         elif (kind == 'ipsec'):
             if (self.db.cursor.rowcount > 0):
                 for item in self.db.cursor.fetchall():
-                    self.ipsec(item['id'], item['ipsec_gateway'], item['ipsec_group'], item['ipsec_secret'], item['ipsec_user'], item['ipsec_pass'])        
+                    self.ipsec(item['id'], item['ipsec_gateway'], item['ipsec_group'], item['ipsec_secret'], item['ipsec_user'], item['ipsec_pass'], item['ipsec_target_host_ip'])        
 
         return True
 
-    def ipsec(self, serviceID, ipsec_gateway, ipsec_group, ipsec_secret, ipsec_user, ipsec_pass):
+    def ipsec(self, serviceID, ipsec_gateway, ipsec_group, ipsec_secret, ipsec_user, ipsec_pass, ipsec_target_host_ip):
         '''check ipsec tunnel'''
 
-        
-        ## establish vpn connection
-        vpncShell = pexpect.spawn('/sbin/vpnc')
-        vpncShell.logfile = sys.stdout
-
-        vpncShell.expect('Enter IPSec gateway address:')
-        vpncShell.sendline(ipsec_gateway)        
-
-        vpncShell.expect('Enter IPSec ID for %s:' %(ipsec_gateway))
-        vpncShell.sendline(ipsec_group)
-
-        vpncShell.expect('Enter IPSec secret for %s@%s:' % (ipsec_group, ipsec_gateway))
-        vpncShell.sendline(ipsec_secret)
-
-        vpncShell.expect('Enter username for %s:' % (ipsec_gateway))
-        vpncShell.sendline(ipsec_user)
-
-        vpncShell.expect('Enter password for %s@%s:' % (ipsec_user, ipsec_gateway))
-        vpncShell.sendline(ipsec_pass)
-
-
-        vpncShell.expect('VPNC started in background')
-
-
+        ## establish vpn tunnel
+        try:
+            vpncShell = pexpect.spawn('/sbin/vpnc')
+            vpncShell.logfile = sys.stdout
+            vpncShell.expect('Enter IPSec gateway address:')
+            vpncShell.sendline(ipsec_gateway)        
+            vpncShell.expect('Enter IPSec ID for %s:' %(ipsec_gateway))
+            vpncShell.sendline(ipsec_group)
+            vpncShell.expect('Enter IPSec secret for %s@%s:' % (ipsec_group, ipsec_gateway))
+            vpncShell.sendline(ipsec_secret)
+            vpncShell.expect('Enter username for %s:' % (ipsec_gateway))
+            vpncShell.sendline(ipsec_user)
+            vpncShell.expect('Enter password for %s@%s:' % (ipsec_user, ipsec_gateway))
+            vpncShell.sendline(ipsec_pass)
+            vpncShell.expect('VPNC started in background')
+            self.recordResult('good', serviceID)
+        except:
+            self.recordResult('bad', serviceID)
         time.sleep(1)
-        pexpect.run('sudo /sbin/route add -host 172.24.13.11 dev tun0')
-
+        pexpect.run('/sbin/route add -host %s dev tun0' % (ipsec_target_host_ip))
+        
         print pexpect.run('/bin/netstat -r')
-        time.sleep(10)
-        vpncShell.sendline('ping 172.24.13.11 -c 2')
+        #vpncShell.sendline('ping %s -c 2' % (ipsec_target_host_ip) )
 
+        try:
+            delay = ping.do_one(ipsec_target_host_ip, timeout=2)
+            #print 'DELAY: %s' % (delay)
+            if delay >= 0.0:
+                self.recordResultSecondary('good', serviceID)
+            else:
+                self.recordResultSecondary('bad', serviceID)
+        except socket.error, e:
+            #print "Ping Error:", e
+            self.recordResultSecondary('bad', serviceID)
         vpncDisconnectShell = pexpect.spawn('/sbin/vpnc-disconnect')
-        
-        
-        
-        
-    def recordResult(self, status, serviceID):
-        self.db.cursor.execute("""UPDATE results SET last_check = NOW(), status = '%s' WHERE services_id = %s """ % (status, serviceID))
-        return self.db.cursor.lastrowid
-    
+                    
     ## check a mysql connection
     def mysql(self, serviceID, host, name, user, passwd):
         try:
@@ -169,4 +176,3 @@ class Checks:
                 continue
             break
         self.recordResult(status, serviceID)
-        

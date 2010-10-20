@@ -57,9 +57,11 @@ class Listing:
                                         services.ipsec_gateway,
                                         services.ipsec_group,
                                         services.ipsec_user,
+                                        services.ipsec_target_host_ip,
                                         results.services_id,
                                         results.last_check,
-                                        results.status
+                                        results.status,
+                                        results.status_secondary
                                     FROM services, results
                                     WHERE services.id = results.services_id
                                     AND services.kind = 'ipsec'
