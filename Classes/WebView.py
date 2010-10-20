@@ -24,10 +24,10 @@ class Status:
         <div id="header" class="grid_8">
 		<h1>Simple Server Status</h1>
 		</div>
-		<div id="spacer" class="grid_6">&nbsp;</div>		
-		<div id="settings" class="grid_1"><button id='run'>Run Checks Now</button></div>
-		<!-- <div id="settings" class="grid_1"><a href="/new"><img src="static/images/preferences_system.png" width="32" height="32"></a></div> -->
+		<div id="spacer" class="grid_6">&nbsp;</div>	
+		<div id="settings" class="grid_1"><a href="/new"><img src="static/images/preferences_system.png" width="32" height="32"></a></div>
         <br /><br /><br />
+		<div id="launcherbutton"><button id='run'>Run Checks Now</button></div>
         """
 
         ## mysql
@@ -117,6 +117,7 @@ class Status:
                 		<script type="text/javascript">            		    
                     		$("#run").click(function()
                     		{
+                    		    $("#launcherbutton").replaceWith('<img src="static/images/ajax-loader.gif" />');
                                 $.get("/run/", function(data) {
                                     $('.result').html(data);
                                     location.reload();
