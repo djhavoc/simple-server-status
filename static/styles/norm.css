@@ -27,6 +27,11 @@ body
 	text-shadow: 2px 2px 2px #888;
 }
 
+#settings
+{
+	margin-top:10px;
+}
+
 .checkModule
 {
 	margin:25px 0 0 25px;
@@ -65,6 +70,12 @@ body
 }
 
 .checkTable
+{
+	margin-bottom:10px;
+	margin-right:10px;
+}
+
+.checkTable tr
 {
 	margin-bottom:10px;
 	margin-right:10px;
