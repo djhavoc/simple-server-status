@@ -5,7 +5,6 @@ import copy
 import MySQLdb
 import ping
 import socket
-#import TimeoutSocket
 import urllib2
 import Database
 import config
@@ -92,7 +91,8 @@ class Checks:
 
     def ipsec(self, serviceID, ipsec_gateway, ipsec_group, ipsec_secret, ipsec_user, ipsec_pass, ipsec_target_host_ip):
         '''check ipsec tunnel'''
-
+        print 'ipsec'
+        socket.setdefaulttimeout(2)
         ## establish vpn tunnel
         try:
             vpncShell = pexpect.spawn('/sbin/vpnc')
@@ -131,11 +131,13 @@ class Checks:
                     
     ## check a mysql connection
     def mysql(self, serviceID, host, name, user, passwd):
+        print 'mysql'
         try:
             dbConn = MySQLdb.connect (host = host,
                                     user = user,
                                     passwd = passwd,
-                                    db = name)
+                                    db = name,
+                                    connect_timeout = 2)
             status = 'good'
             dbConn.close()
         except MySQLdb.Error, e:
@@ -144,6 +146,7 @@ class Checks:
                     
     ## check a web service
     def http(self, serviceID, url):
+        print 'http'
         socket.setdefaulttimeout(2)
         try:
             result = urllib2.urlopen(url)
@@ -155,7 +158,8 @@ class Checks:
         
     ## check a tcp port
     def tcp(self, serviceID, ip, port):
-        #TimeoutSocket.setDefaultSocketTimeout(20)
+        print 'tcp'
+        socket.setdefaulttimeout(2)
         s = None
         for res in socket.getaddrinfo(ip, int(port), socket.AF_UNSPEC, socket.SOCK_STREAM):
             af, socktype, proto, canonname, sa = res

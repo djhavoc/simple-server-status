@@ -94,7 +94,7 @@ class Status:
         listOfChecks = self.serviceList.ipsec()
         if (listOfChecks.rowcount > 0):
             content += "<div class='checkModule grid_15'>"
-            content += "<div class='checkName grid_6'><h2>Cisco IPsec</h2></div>"
+            content += "<div class='checkName grid_6'><h2>IPsec</h2></div>"
             content += "<div class='grid_15'>"
             content += "<table class='checkTable' width='100%'>"
             content += "<thead><tr><th><b>status</b><th><b>target</b><th><b>title</b></th></th><th><b>when</b></th><th><b>gateway</b></th><th><b>group</b></th><th><b>user</b></th><th><b>target</b></th></tr></thead>"
