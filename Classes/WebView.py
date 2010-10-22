@@ -41,7 +41,7 @@ class Status:
             content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
-                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
+                content += '<td><img src=\"static/images/' + str(item['status']) + '.png width=15 height=15\" /></td>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + item['db_name'] + '</td>'
@@ -62,7 +62,7 @@ class Status:
             content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
-                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
+                content += '<td><img src=\"static/images/' + str(item['status']) + '.png width=15 height=15\" /></td>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + str(item['http_url']) + '</td>'
@@ -81,7 +81,7 @@ class Status:
             content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
-                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
+                content += '<td><img src=\"static/images/' + str(item['status']) + '.png width=15 height=15\" /></td>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + str(item['tcp_ip']) + '</td>'
@@ -101,7 +101,7 @@ class Status:
             content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
-                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
+                content += '<td><img src=\"static/images/' + str(item['status']) + '.png width=15 height=15\" /></td>'
                 content += '<td><img src=\"static/images/' + str(item['status_secondary']) + '.png\" /></td>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + str(item['last_check']) + '</td>'
