@@ -4,14 +4,14 @@ import sys
 sys.stderr = None
 sys.path.append('Classes/')
 sys.path.append('Classes/webpy/')
-import web
+import web 
 from WebView import *
 
 ## define views
 urls = ( 
     '/', 'Status',
     '/status/', 'Status',
-    '/run/', 'RunChecks',
+	'/run/', 'RunChecks',
     '/new/', 'AddCheck'
     )
 

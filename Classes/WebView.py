@@ -6,9 +6,9 @@ class Status:
 
     ## fetch all checks data and display
     def GET(self):
-
+	
         self.serviceList = Service.Listing()
-        
+       
         content = """
         <html>
         <head>
