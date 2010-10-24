@@ -89,3 +89,14 @@ body
 	font-size:12px;
 	padding-left:10px;
 }
+
+#launcherbutton
+{
+	margin-left:25px;
+	margin-right:15px;
+}
+
+#launcherbutton img
+{
+	margin:15px 0 10px 0;
+}
