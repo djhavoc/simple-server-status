@@ -5,11 +5,11 @@
 A super lightweight service monitor.  Checks the connectivity to various services and displays results in web ui.
 
 =Requirements=
-tested with python 2.6
-web.py [ http://webpy.org/ ] (test with v0.34)
+tested with python 2.4
 MySQLdb
 urllib2
 vpnc (/sbin/vpnc, /sbin/vpnc-disconnect)
+modify vpnc-script
 
 =Setup=
 - Move 'webpy/' to './Classes/'
