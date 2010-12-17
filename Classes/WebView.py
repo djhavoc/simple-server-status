@@ -6,9 +6,9 @@ class Status:
 
     ## fetch all checks data and display
     def GET(self):
-
+	
         self.serviceList = Service.Listing()
-        
+       
         content = """
         <html>
         <head>
@@ -25,7 +25,7 @@ class Status:
 		<h1>Simple Server Status</h1>
 		</div>
 		<div id="spacer" class="grid_6">&nbsp;</div>	
-		<div id="settings" class="grid_1"><a href="/new"><img src="static/images/preferences_system.png" width="32" height="32"></a></div>
+		<div id="settings" class="grid_1"><a href="/new/"><img src="static/images/preferences_system.png" width="32" height="32"></a></div>
         <br /><br /><br />
 		<div id="launcherbutton"><button id='run'>Run Checks Now</button></div>
         """
@@ -36,12 +36,12 @@ class Status:
             content += "<div class='checkModule grid_15'>"
             content += "<div class='checkName grid_6'><h2>MySQL</h2></div>"
             content += "<div class='grid_15'>"
-            content += "<table class='checkTable' width='100%'>"
+            content += "<table class='checkTable' width='98%'>"
             content += "<thead><tr><th><b>status</b></th><th><b>title</b></th><th><b>when</b></th><th><b>database</b></th><th><b>host</b></th><th><b>user</b></th></tr></thead>"
             content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
-                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
+                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" width=15 height=15 /></td>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + item['db_name'] + '</td>'
@@ -57,12 +57,12 @@ class Status:
             content += "<div class='checkModule grid_15'>"
             content += "<div class='checkName grid_6'><h2>HTTP</h2></div>"
             content += "<div class='grid_15'>"
-            content += "<table class='checkTable' width='100%'>"
+            content += "<table class='checkTable' width='98%'>"
             content += "<thead><tr><th><b>status</b><th><b>title</b></th></th><th><b>when</b></th><th><b>url</b></th></tr></thead>"
             content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
-                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
+                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" width=15 height=15 /></td>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + str(item['http_url']) + '</td>'
@@ -76,12 +76,12 @@ class Status:
             content += "<div class='checkModule grid_15'>"
             content += "<div class='checkName grid_6'><h2>TCP Port</h2></div>"
             content += "<div class='grid_15'>"
-            content += "<table class='checkTable' width='100%'>"
+            content += "<table class='checkTable' width='98%'>"
             content += "<thead><tr><th><b>status</b><th><b>title</b></th></th><th><b>when</b></th><th><b>ip</b></th><th><b>port</b></th></tr></thead>"
             content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
-                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
+                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" width=15 height=15 /></td>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + str(item['tcp_ip']) + '</td>'
@@ -96,13 +96,13 @@ class Status:
             content += "<div class='checkModule grid_15'>"
             content += "<div class='checkName grid_6'><h2>IPsec</h2></div>"
             content += "<div class='grid_15'>"
-            content += "<table class='checkTable' width='100%'>"
+            content += "<table class='checkTable' width='98%'>"
             content += "<thead><tr><th><b>status</b><th><b>target</b><th><b>title</b></th></th><th><b>when</b></th><th><b>gateway</b></th><th><b>group</b></th><th><b>user</b></th><th><b>target</b></th></tr></thead>"
             content += "<tbody>"
             for item in listOfChecks.fetchall():
                 content += '<tr>'
-                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" /></td>'
-                content += '<td><img src=\"static/images/' + str(item['status_secondary']) + '.png\" /></td>'
+                content += '<td><img src=\"static/images/' + str(item['status']) + '.png\" width=15 height=15 /></td>'
+                content += '<td><img src=\"static/images/' + str(item['status_secondary']) + '.png\"  width=15 height=15 /></td>'
                 content += '<td>' + item['title'] + '</td>'
                 content += '<td>' + str(item['last_check']) + '</td>'
                 content += '<td>' + str(item['ipsec_gateway']) + '</td>'
@@ -112,20 +112,23 @@ class Status:
                 content += '</tr>'
             content += "</tbody>"
             content += "</table></div></div>"
-            content += '''
-                        <script src="static/js/jquery.js" type="text/javascript"></script>
-                		<script type="text/javascript">            		    
-                    		$("#run").click(function()
-                    		{
-                    		    $("#launcherbutton").replaceWith('<img src="static/images/ajax-loader.gif" />');
-                                $.get("/run/", function(data) {
-                                    $('.result').html(data);
-                                    location.reload();
-                                });
-                            });
-                		</script>
-                        '''
-            content += """</div></div></body></html>"""        
+        content += """
+        <script src="static/js/jquery.js" type="text/javascript"></script>
+		<script type="text/javascript">            		    
+		$("#run").click(function()
+		{
+		$("#launcherbutton").append('<br><img src="static/images/ajax-loader.gif" />');
+		$.get("/run/", function(data) {
+		$('.result').html(data);
+		location.reload();
+		});
+		});
+		</script>
+		</div>
+		</div>
+		</body>
+		</html>
+		"""        
         return content
 
 class RunChecks:
@@ -137,8 +140,7 @@ class RunChecks:
 class AddCheck:
         
     def GET(self):
-        
-        content =  """
+        content = """
         <html>
 		<head>
 		<title>Simple Server Status</title>
@@ -154,11 +156,10 @@ class AddCheck:
 		<h1>Simple Server Status</h1>
 		</div>
 		<br /><br /><br />
-
 		<div class='checkModule grid_15'>
 		<div class='checkName grid_6'><h2>Add New Check</h2></div>
 		<div class='grid_15'>
-		<form name="addCheck" method="post" action="index.php">
+		<form name="addCheck" method="post">
 		<div id="typeCheck">
 		<select id="checkType">
 		<option value="-q">&nbsp;</option>
@@ -169,7 +170,7 @@ class AddCheck:
 		</select>
 		</div>
 		<div id="addCheckTable">
-		<table id="http" class='checkTable' width='100%'>
+		<table id="http" class='checkTable' width='98%'>
 		<thead>
 		<tr>
 		<th><b>title</b></th>
@@ -183,7 +184,7 @@ class AddCheck:
 		</tr>
 		</tbody>
 		</table>
-		<table id="tcp" class='checkTable' width='100%'>
+		<table id="tcp" class='checkTable' width='98%'>
 		<thead>
 		<tr>
 		<th><b>title</b></th>
@@ -199,7 +200,7 @@ class AddCheck:
 		</tr>
 		</tbody>
 		</table>
-		<table id="mysql" class='checkTable' width='100%'>
+		<table id="mysql" class='checkTable' width='98%'>
 		<thead>
 		<tr>
 		<th><b>title</b></th>
@@ -216,14 +217,16 @@ class AddCheck:
 		<tr>
 		<th><b>mysql password (AES 256 Enabled)</b></th>
 		<th><b>mysql port</b></th>
+		<th>&nbsp;</th>
 		</tr>
 		<tr>
 		<td><input name="mysql_pass" type="text" size="35" /></td>
 		<td><input name="mysql_port" type="text" size="15" /></td>
+		<td>&nbsp;</td>
 		</tr>
 		</tbody>
 		</table>
-		<table id="ipsec" class='checkTable' width='100%'>
+		<table id="ipsec" class='checkTable' width='98%'>
 		<thead>
 		<tr>
 		<th><b>title</b></th>
@@ -254,8 +257,6 @@ class AddCheck:
 		</form>
 		</div>
 		</div>
-
-
 		</div>
 		</div>
 		</body>
@@ -264,14 +265,13 @@ class AddCheck:
 		$(document).ready(function()
 		{
 		$(".checkTable").hide();
-
 		$("#checkType").change(function()
 		{
 		$(".checkTable").hide();
-		$("#"+$("#checkType").val()).slideDown(500);
+		$("#"+$("#checkType").val()).show();
 		});
-
 		});
 		</script>
 		</html>
 		"""
+	return content

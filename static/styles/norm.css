@@ -41,12 +41,6 @@ body
 	-webkit-box-shadow: 5px 5px 5px #333333, 0px 0px 5px #B3B3B3; /* Safari, Chrome */
 	box-shadow: 5px 5px 5px #333333, 0px 0px 5px #B3B3B3; /* CSS3 */
 	
-    -webkit-border-top-left-radius: 10px;
-	-webkit-border-bottom-right-radius: 10px;
-	-moz-border-radius-topleft: 10px;
-	-moz-border-radius-bottomright: 10px;
-	border-top-left-radius: 10px;
-	border-bottom-right-radius: 10px;
 }
 
 .checkName
@@ -63,10 +57,12 @@ body
 .checkTable th
 {
 	margin-bottom:5px;
+	padding-left:10px;
 	font-family: 'Droid Sans';
 	font-size:12px;
 	color:#000;
 	text-shadow: 1px 1px 1px #888;
+	text-align:left;
 }
 
 .checkTable
@@ -79,10 +75,28 @@ body
 {
 	margin-bottom:10px;
 	margin-right:10px;
+	border-bottom:1px solid #ccc;
+}
+
+.checkTable tbody tr:hover
+{
+	background-color:#999;
 }
 
 .checkTable td
 {
-	text-align:center;
-	font-size:10px;
+	text-align:left;
+	font-size:12px;
+	padding-left:10px;
+}
+
+#launcherbutton
+{
+	margin-left:25px;
+	margin-right:15px;
+}
+
+#launcherbutton img
+{
+	margin:15px 0 10px 0;
 }
