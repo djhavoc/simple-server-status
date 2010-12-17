@@ -1,5 +1,3 @@
 .DS_Store
 *.pyc
 doc/wiki/
-
-/Classes/webpy/
