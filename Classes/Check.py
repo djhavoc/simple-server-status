@@ -9,6 +9,7 @@ import urllib2
 import Database
 import config
 import time
+import smtplib
 
 class Checks:
     
@@ -28,16 +29,31 @@ class Checks:
                                                 db_name, 
                                                 db_host,
                                                 db_user, 
-                                                AES_DECRYPT(db_pass,'%s') as db_pass
+                                                db_port,
+                                                db_pass
                                         FROM services 
-                                        WHERE services.kind = 'mysql'""" %(config.DB_CRYPTOKEY))
+                                        WHERE services.kind = 'mysql'""")
 
         elif (kind == 'http'):
             ## http
             self.db.cursor.execute("""SELECT id, http_url
                                                         FROM services 
                                                         WHERE services.kind = 'http'""")
-
+        elif (kind == 'icmp'):
+            ## icmp
+            self.db.cursor.execute("""SELECT id, icmp_ip
+                                                        FROM services
+                                                        WHERE services.kind = 'icmp'""")
+        elif (kind == 'smtp'):
+            ## smtp
+            self.db.cursor.execute("""SELECT id, smtp_ip
+                                                        FROM services
+                                                        WHERE services.kind = 'smtp'""")
+        elif (kind == 'pop3'):
+            ## pop3 
+            self.db.cursor.execute("""SELECT id, pop3_ip
+                                                        FROM services
+                                                        WHERE services.kind = 'pop3'""")
         
         elif (kind == 'tcp'):
             self.db.cursor.execute("""SELECT id, tcp_ip, tcp_port
@@ -56,9 +72,14 @@ class Checks:
                                         FROM services
                                         WHERE services.kind = 'ipsec'""" %(config.DB_CRYPTOKEY,config.DB_CRYPTOKEY))
 
-    def recordResult(self, status, serviceID):
+    def recordResult(self, status, serviceID, myerror=None):
         self.db.cursor.execute("""UPDATE results SET last_check = NOW(), status = '%s' WHERE services_id = %s """ % (status, serviceID))
-        return self.db.cursor.lastrowid
+        lastrowid = self.db.cursor.lastrowid
+        if(myerror != None):
+            query = """INSERT into status (service_id,status,check_date) values ("%s","%s",NOW())
+                    """ % (serviceID,myerror)
+            self.db.cursor.execute(query)
+        return lastrowid
 
     def recordResultSecondary(self, status, serviceID):
         self.db.cursor.execute("""UPDATE results SET last_check = NOW(), status_secondary = '%s' WHERE services_id = %s """ % (status, serviceID))
@@ -70,7 +91,7 @@ class Checks:
         if (kind == 'mysql'):
             if (self.db.cursor.rowcount > 0):
                 for item in self.db.cursor.fetchall():
-                    self.mysql(item['id'], item['db_host'], item['db_name'], item['db_user'], item['db_pass'])
+                    self.mysql(item['id'], item['db_host'], item['db_name'], item['db_user'], item['db_pass'], item['db_port'])
 
         elif (kind == 'http'):
             if (self.db.cursor.rowcount > 0):
@@ -81,6 +102,21 @@ class Checks:
             if (self.db.cursor.rowcount > 0):
                 for item in self.db.cursor.fetchall():
                     self.tcp(item['id'], item['tcp_ip'], item['tcp_port'])        
+
+        elif (kind == 'smtp'):
+            if (self.db.cursor.rowcount > 0):
+                for item in self.db.cursor.fetchall():
+                    self.smtp(item['id'], item['smtp_ip'], 25)
+
+        elif (kind == 'pop3'):
+            if (self.db.cursor.rowcount > 0):
+                for item in self.db.cursor.fetchall():
+                    self.pop3(item['id'], item['pop3_ip'], 110)
+
+        elif (kind == 'icmp'):
+            if (self.db.cursor.rowcount > 0):
+                for item in self.db.cursor.fetchall():
+                    self.icmp_c(item['id'], item['icmp_ip'])
 
         elif (kind == 'ipsec'):
             if (self.db.cursor.rowcount > 0):
@@ -115,10 +151,8 @@ class Checks:
         pexpect.run('/sbin/route add -host %s dev tun0' % (ipsec_target_host_ip))
         
         print pexpect.run('/bin/netstat -r')
-        #vpncShell.sendline('ping %s -c 2' % (ipsec_target_host_ip) )
-
         try:
-            delay = ping.do_one(ipsec_target_host_ip, timeout=2)
+            delay = ping.doOne(ipsec_target_host_ip, timeout=2)
             #print 'DELAY: %s' % (delay)
             if delay >= 0.0:
                 self.recordResultSecondary('good', serviceID)
@@ -130,19 +164,23 @@ class Checks:
         vpncDisconnectShell = pexpect.spawn('/sbin/vpnc-disconnect')
                     
     ## check a mysql connection
-    def mysql(self, serviceID, host, name, user, passwd):
+    def mysql(self, serviceID, host, name, user, passwd, port):
         print 'mysql'
         try:
             dbConn = MySQLdb.connect (host = host,
+                                    port = port,
                                     user = user,
                                     passwd = passwd,
                                     db = name,
                                     connect_timeout = 2)
             status = 'good'
+            error_msg = None
             dbConn.close()
         except MySQLdb.Error, e:
+            error_msg = e.args[1]
             status = 'bad'
-        self.recordResult(status, serviceID)
+
+        self.recordResult(status, serviceID, error_msg)
                     
     ## check a web service
     def http(self, serviceID, url):
@@ -150,11 +188,23 @@ class Checks:
         socket.setdefaulttimeout(2)
         try:
             result = urllib2.urlopen(url)
-            #print result.read(100)
             status = 'good'
+            error_msg = None
         except IOError, e:
             status = 'bad'
-        self.recordResult(status, serviceID)
+            error_msg = e.args[0]
+        self.recordResult(status, serviceID, error_msg)
+
+    ## check icmp packets
+    def icmp_c(self, serviceID, ip):
+        print 'icmp'
+        socket.setdefaulttimeout(2)
+        delay = ping.doOne(ip, timeout=3)
+        if delay >= 0.0:
+            self.recordResult('good', serviceID)
+        else:
+            error_msg = "No Response from Target"
+            self.recordResult('bad', serviceID, error_msg)
         
     ## check a tcp port
     def tcp(self, serviceID, ip, port):
@@ -166,17 +216,79 @@ class Checks:
             try:
                 s = socket.socket(af, socktype, proto)
                 status = 'good'
+                error_msg = None
             except socket.error, msg:
                 status = 'bad'
+                error_msg = msg.args[1]
                 s = None
                 continue
             try:
                 s.connect(sa)
                 status = 'good'
+                error_msg = None
             except socket.error, msg:
                 status = 'bad'
+                s.close()
+                error_msg = msg.args[1]
+                s = None
+                continue
+            break
+        self.recordResult(status, serviceID, error_msg)
+
+    def pop3(self, serviceID, ip, port):
+        print 'pop3'
+        socket.setdefaulttimeout(2)
+        s = None
+        for res in socket.getaddrinfo(ip, int(port), socket.AF_UNSPEC, socket.SOCK_STREAM):
+            af, socktype, proto, canonname, sa = res
+            try:
+                s = socket.socket(af, socktype, proto)
+                status = 'good'
+                error_msg = None
+            except socket.error, msg:
+                status = 'bad'
+                error_msg = msg.args[1]
+                s = None
+                continue
+            try:
+                s.connect(sa)
+                status = 'good'
+                error_msg = None
+            except socket.error, msg:
+                status = 'bad'
+                error_msg = msg.args[1]
                 s.close()
                 s = None
                 continue
             break
-        self.recordResult(status, serviceID)
+        self.recordResult(status, serviceID, error_msg)
+
+    def smtp(self, serviceID, ip, port):
+        print 'smtp'
+        hostname = socket.gethostname()
+        socket.setdefaulttimeout(2)
+        s = None
+        for res in socket.getaddrinfo(ip, int(port), socket.AF_UNSPEC, socket.SOCK_STREAM):
+            af, socktype, proto, canonname, sa = res
+            try:
+                s = socket.socket(af, socktype, proto)
+                status = 'good'
+                error_msg = None
+            except socket.error, msg:
+                status = 'bad'
+                error_msg = msg.args[1]
+                s = None
+                continue
+            try:
+                s.connect(sa)
+                status = 'good'
+                error_msg = None
+            except socket.error, msg:
+                status = 'bad'
+                error_msg = msg.args[1]
+                s.close()
+                s = None
+                continue
+            break
+        self.recordResult(status, serviceID, error_msg)
+

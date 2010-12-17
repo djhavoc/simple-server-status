@@ -9,13 +9,12 @@ from WebView import *
 
 ## define views
 urls = ( 
-    '/', 'Status',
-	'/status', 'Status',
-    '/status/', 'Status',
-	'/run', 'RunChecks',
-	'/run/', 'RunChecks',
-	'/new', 'AddCheck',
-    '/new/', 'AddCheck'
+'/', 'Status',
+'/status.*', 'Status',
+'/do.*', 'RunAdd',
+'/run.*', 'RunChecks',
+'/new.*', 'AddCheck',
+'/delete/(.*)', 'Delete'
     )
 
 app = web.application(urls, globals())
