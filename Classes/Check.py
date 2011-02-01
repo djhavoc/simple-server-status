@@ -30,9 +30,9 @@ class Checks:
                                                 db_host,
                                                 db_user, 
                                                 db_port,
-                                                db_pass
+                                                AES_DECRYPT(db_pass,'%s') as db_pass
                                         FROM services 
-                                        WHERE services.kind = 'mysql'""")
+                                        WHERE services.kind = 'mysql'""" % (config.DB_CRYPTOKEY)) 
 
         elif (kind == 'http'):
             ## http
